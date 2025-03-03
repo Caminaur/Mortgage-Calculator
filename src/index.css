@@ -3,6 +3,8 @@
 
 @theme {
   --color-primary-lime: oklch(0.78 0.17 105);
+  --color-primary-lime-btn-hover: oklch(0.83 0.17 104.54);
+  --color-primary-lime-010: oklch(0.78 0.16 104.73 / 0.1);
   --color-primary-red: oklch(0.64 0.25 24);
 
   --color-neutral-white: oklch(1 0 0);
@@ -12,4 +14,27 @@
   --color-neutral-slate-700: oklch(0.4 0.08 220);
   --color-neutral-slate-900: oklch(0.18 0.08 220);
   --default-font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.grayText {
+  @apply text-gray-500 text-sm;
+}
+.inputDiv {
+  @apply flex border-1 cursor-pointer border-gray-400 overflow-hidden rounded-md focus-within:border-primary-lime hover:border-gray-700;
+}
+.label {
+  @apply w-auto px-4 h-12 flex justify-center items-center font-bold bg-neutral-slate-100 text-gray-600 group-focus-within:bg-primary-lime cursor-pointer text-base;
+}
+.input {
+  @apply w-full border-none focus:outline-none cursor-pointer px-3 font-bold text-neutral-slate-900;
+}
+.radioLabel {
+  @apply flex items-center gap-2 cursor-pointer w-full bg-neutral-white p-3 border-1 border-gray-500  rounded-md hover:border-primary-lime has-checked:border-primary-lime has-checked:bg-primary-lime-010 focus-within:bg-primary-lime-010;
+}
+.radioSelector {
+  @apply w-6 h-6 border-2 border-gray-400 rounded-full  transition-colors relative after:content-[''] after:block after:w-4 after:h-4 after:bg-primary-lime after:rounded-full after:scale-0 peer-checked:after:scale-100 after:transition-transform after:duration-200 after:absolute after:top-[2px] after:left-[2px] peer-checked:border-primary-lime;
+}
+
+.btn {
+  @apply flex px-4 text-xs py-3 rounded-3xl bg-primary-lime font-bold align-middle justify-center cursor-pointer gap-2 w-60 mt-4 hover:bg-primary-lime-btn-hover md:w-max md:px-12 md:text-base;
 }
