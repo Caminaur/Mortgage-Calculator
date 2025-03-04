@@ -5,6 +5,9 @@ import IllustrationEmpty from "./assets/illustration-empty.svg";
 
 function App() {
   const [focusedInput, setFocusedInput] = useState(0);
+  const [showResults, setShowResults] = useState(false);
+  const [monthlyPayment, setMonthlyPayment] = useState("");
+  const [totalPayment, setTotalPayment] = useState("");
   const [inputs, setInputs] = useState([
     "amount",
     "mortgage-term",
@@ -13,6 +16,27 @@ function App() {
     "radio-2",
     "btn",
   ]);
+
+  function resetForm() {
+    setShowResults(false);
+    setMonthlyPayment("");
+    setTotalPayment("");
+
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    for (const radioButton of radioButtons) {
+      radioButton.checked = false;
+    }
+
+    const inputFields = document.querySelectorAll('input[type="number"]');
+    for (const inputField of inputFields) {
+      inputField.value = "";
+    }
+
+    const errorMessages = document.querySelectorAll(".error");
+    errorMessages.forEach((errorMessage) => {
+      errorMessage.remove();
+    });
+  }
 
   function nextFocusedInput() {
     setFocusedInput((d) => (d + 1) % 6);
@@ -26,8 +50,10 @@ function App() {
   function handleSubmit(e) {
     e.preventDefault();
 
+    let isThereError = false;
+
     // remove previous error messages
-    const errorMessages = document.querySelectorAll(".text-primary-red");
+    const errorMessages = document.querySelectorAll(".error");
     errorMessages.forEach((errorMessage) => {
       errorMessage.remove();
     });
@@ -47,8 +73,9 @@ function App() {
       const parentDiv = document.getElementById("radioDiv");
       const errorP = document.createElement("p");
       errorP.innerText = "This field is required";
-      errorP.className = "text-primary-red";
+      errorP.className = "error";
       parentDiv.appendChild(errorP);
+      isThereError = true;
     }
 
     for (const field_id of fields_ids) {
@@ -57,13 +84,15 @@ function App() {
         const parentDiv = field.parentElement.parentElement;
         const errorP = document.createElement("p");
         errorP.innerText = "This field is required";
-        errorP.className = "text-primary-red";
+        errorP.className = "error";
         parentDiv.appendChild(errorP);
-      } else {
-        // DO SOMETHING
+        isThereError = true;
       }
     }
-    console.log(e);
+
+    if (!isThereError) {
+      handleResults();
+    }
   }
 
   useEffect(() => {
@@ -81,38 +110,75 @@ function App() {
         }
       }
     };
-    const handleKeyUp = (e) => {
-      if (e.key === "Shift") {
-        setIsShiftPressed(false);
-      }
-    };
 
     window.addEventListener("keydown", handleKeyDown);
 
-    // ✅ Cleanup function to remove event listeners
+    // Cleanup function
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  function handleResults() {
+    setShowResults(true);
+    const amount = document.getElementById("amount").value;
+    const mortgageTerm = document.getElementById("mortgage-term").value;
+    const interestRate = document.getElementById("interest-rate").value;
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    let mortgageType = "";
+
+    for (const radioButton of radioButtons) {
+      if (radioButton.checked) {
+        mortgageType = radioButton.value;
+      }
+    }
+
+    const totalPayment = amount * (1 + interestRate / 100);
+    const monthlyPayment = totalPayment / mortgageTerm / 12;
+
+    const formattedMonthlyPayment = monthlyPayment.toLocaleString("en-GB", {
+      style: "currency",
+      currency: "GBP",
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    });
+
+    const formattedTotalPayment = totalPayment.toLocaleString("en-GB", {
+      style: "currency",
+      currency: "GBP",
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    });
+
+    console.log(document.getElementById("monthly-payment"));
+
+    setMonthlyPayment(formattedMonthlyPayment);
+    setTotalPayment(formattedTotalPayment);
+  }
 
   return (
     <div className="h-screen w-screen flex justify-around items-center bg-neutral-slate-100 p-1.5 max-sm:p-0">
       <div className="h-140 w-220 rounded-2xl flex overflow-hidden bg-neutral-white max-sm:h-full max-sm:w-full max-sm:flex-col max-sm:rounded-none">
         <form
           action="#"
-          className="h-full w-1/2 p-8 flex flex-col justify-between max-sm:w-full "
+          className="h-full w-1/2 p-8 flex flex-col justify-between max-sm:w-full  max-sm:p-4 "
         >
           <div className="flex w-full justify-between items-center max-sm:flex-col max-sm:items-start">
             <p className="font-bold text-[20px] ">Mortgage Calculator</p>
-            <p className="text-gray-500 underline text-sm">Clear All</p>
+            <p
+              className="text-gray-500 underline text-sm cursor-pointer"
+              onClick={resetForm}
+            >
+              Clear All
+            </p>
           </div>
-          <div className="flex flex-col gap-4">
-            <div className="w-full flex flex-col gap-2  group">
+          <div className="flex flex-col gap-4 max-sm:gap-1">
+            <div className="w-full flex flex-col gap-2 group max-sm:gap-0">
               <p className="grayText">Mortgage Amount</p>
               <div className="inputDiv">
                 <label
                   for="amount"
-                  className="w-12 h-12 flex justify-center items-center font-bold bg-neutral-slate-100 text-[20px] text-gray-600 hover-without group-focus-within:bg-primary-lime cursor-pointer"
+                  className="w-12 h-12 flex justify-center items-center font-bold bg-neutral-slate-100 text-[20px] text-gray-600 hover-without group-focus-within:bg-primary-lime cursor-pointer group-has-[.error]:bg-primary-red group-has-[.error]:text-neutral-white"
                 >
                   £
                 </label>
@@ -137,10 +203,7 @@ function App() {
                     className="input"
                     tabindex="2"
                   />
-                  <label
-                    for="mortgage-term"
-                    className="label text-md  hover-without"
-                  >
+                  <label for="mortgage-term" className="label text-md ">
                     years
                   </label>
                 </div>
@@ -212,16 +275,54 @@ function App() {
             </label>
           </button>
         </form>
-        <div className="bg-neutral-slate-900 opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-center items-center gap-3 max-sm:w-full max-sm:rounded-none">
-          <img src={IllustrationEmpty} alt="" />
-          <span className="title font-bold text-[20px] text-neutral-white">
-            Results shown here
-          </span>
-          <span className="description w-full text-center px-8 grayText">
-            Complete the form and click “calculate repayments” to see what your
-            monthly repayments would be.
-          </span>
-        </div>
+        {!showResults ? (
+          <div className="bg-neutral-slate-900-bg opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-center items-center gap-3 max-sm:w-full max-sm:rounded-none max-sm:pb-6">
+            <img src={IllustrationEmpty} alt="" />
+            <span className="title font-bold text-[20px] text-neutral-white">
+              Results shown here
+            </span>
+            <span className="description w-full text-center px-8 grayText">
+              Complete the form and click “calculate repayments” to see what
+              your monthly repayments would be.
+            </span>
+          </div>
+        ) : (
+          <div className="bg-neutral-slate-900-bg opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-start  gap-3 max-sm:w-full max-sm:rounded-none p-8  max-sm:p-4 max-sm:pb-6">
+            <span className="title font-bold text-[22px] text-neutral-white">
+              Your results
+            </span>
+            <span className="description w-full text-neutral-slate-100 font-light text-sm">
+              Your results are shown below based on the information you
+              provided. To adjust the results, edit the form and click
+              “calculate repayments” again.
+            </span>
+            <div className="w-full h-full py-6 max-sm:py-0 ">
+              <div className="w-full h-full bg-neutral-slate-900 rounded-2xl border-t-3 border-primary-lime flex flex-col justify-between p-6  max-sm:p-4">
+                <div className="flex flex-col gap-4 justify-start h-full py-2">
+                  <span className="grayText">Your monthly repayments</span>
+                  <span
+                    className="text-primary-lime text-6xl  max-sm:text-5xl"
+                    id="monthly-payment"
+                  >
+                    {monthlyPayment}
+                  </span>
+                </div>
+                <div className="w-full h-0.5 bg-neutral-slate-100 rounded-e-full"></div>
+                <div className="h-full flex flex-col justify-end gap-2">
+                  <span className="grayText">
+                    Total you'll repay over the term
+                  </span>
+                  <span
+                    className="text-neutral-white text-2xl"
+                    id="total-payment"
+                  >
+                    {totalPayment}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

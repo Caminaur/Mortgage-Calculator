@@ -13,6 +13,8 @@
   --color-neutral-slate-500: oklch(0.54 0.08 220);
   --color-neutral-slate-700: oklch(0.4 0.08 220);
   --color-neutral-slate-900: oklch(0.18 0.08 220);
+  --color-neutral-slate-900-bg: #133040;
+
   --default-font-family: "Plus Jakarta Sans", sans-serif;
 }
 
@@ -23,7 +25,7 @@
   @apply flex border-1 cursor-pointer border-gray-400 overflow-hidden rounded-md focus-within:border-primary-lime hover:border-gray-700;
 }
 .label {
-  @apply w-auto px-4 h-12 flex justify-center items-center font-bold bg-neutral-slate-100 text-gray-600 group-focus-within:bg-primary-lime cursor-pointer text-base;
+  @apply w-auto px-4 h-12 flex justify-center items-center font-bold bg-neutral-slate-100 text-gray-600 group-focus-within:bg-primary-lime cursor-pointer text-base group-has-[.error]:bg-primary-red group-has-[.error]:text-neutral-white;
 }
 .input {
   @apply w-full border-none focus:outline-none cursor-pointer px-3 font-bold text-neutral-slate-900;
@@ -37,4 +39,8 @@
 
 .btn {
   @apply flex px-4 text-xs py-3 rounded-3xl bg-primary-lime font-bold align-middle justify-center cursor-pointer gap-2 w-60 mt-4 hover:bg-primary-lime-btn-hover md:w-max md:px-12 md:text-base;
+}
+
+.error {
+  @apply text-primary-red text-sm;
 }
