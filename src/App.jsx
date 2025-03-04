@@ -157,8 +157,8 @@ function App() {
   }
 
   return (
-    <div className="h-screen w-screen flex justify-around items-center bg-neutral-slate-100 p-1.5 max-sm:p-0">
-      <div className="h-140 w-220 rounded-2xl flex overflow-hidden bg-neutral-white max-sm:h-full max-sm:w-full max-sm:flex-col max-sm:rounded-none">
+    <div className="h-screen w-screen flex justify-around items-center bg-neutral-slate-100 p-1.5 max-sm:p-0 flex-col">
+      <div className="h-140 w-220 max-w-[100%] rounded-2xl flex overflow-hidden bg-neutral-white max-sm:h-full max-sm:w-full max-sm:flex-col max-sm:rounded-none">
         <form
           action="#"
           className="h-full w-1/2 p-8 flex flex-col justify-between max-sm:w-full  max-sm:p-4 "
@@ -276,7 +276,7 @@ function App() {
           </button>
         </form>
         {!showResults ? (
-          <div className="bg-neutral-slate-900-bg opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-center items-center gap-3 max-sm:w-full max-sm:rounded-none max-sm:pb-6">
+          <div className="bg-neutral-slate-900-bg opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-center items-center gap-3 max-sm:w-full max-sm:rounded-none max-sm:pb-6 max-sm:gap-1">
             <img src={IllustrationEmpty} alt="" />
             <span className="title font-bold text-[20px] text-neutral-white">
               Results shown here
@@ -287,7 +287,7 @@ function App() {
             </span>
           </div>
         ) : (
-          <div className="bg-neutral-slate-900-bg opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-start  gap-3 max-sm:w-full max-sm:rounded-none p-8  max-sm:p-4 max-sm:pb-6">
+          <div className="bg-neutral-slate-900-bg opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-start gap-3 max-sm:w-full max-sm:rounded-none p-8  max-sm:p-4 max-sm:pb-6 max-sm:gap-1">
             <span className="title font-bold text-[22px] text-neutral-white">
               Your results
             </span>
@@ -323,6 +323,23 @@ function App() {
             </div>
           </div>
         )}
+      </div>
+
+      <div class="text-[11px] absolute bottom-2 text-center text-neutral-slate-900 max-sm:text-xs sm:text-neutral-slate-700 max-sm:text-neutral-slate-500">
+        <a
+          className="text-blue-600 font-bold max-sm:text-primary-lime"
+          href="https://www.frontendmentor.io/challenges/mortgage-repayment-calculator-Galx1LXK73"
+        >
+          Challenge
+        </a>{" "}
+        coded by{" "}
+        <a
+          href="https://github.com/Caminaur/Mortgage-Calculator"
+          className="text-blue-600 font-bold max-sm:text-primary-lime"
+        >
+          Julian Caminaur
+        </a>
+        .
       </div>
     </div>
   );
