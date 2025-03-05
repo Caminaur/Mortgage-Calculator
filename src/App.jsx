@@ -8,14 +8,14 @@ function App() {
   const [showResults, setShowResults] = useState(false);
   const [monthlyPayment, setMonthlyPayment] = useState("");
   const [totalPayment, setTotalPayment] = useState("");
-  const [inputs, setInputs] = useState([
+  const inputs = [
     "amount",
     "mortgage-term",
     "interest-rate",
     "radio-1",
     "radio-2",
     "btn",
-  ]);
+  ];
 
   function resetForm() {
     setShowResults(false);
@@ -149,36 +149,33 @@ function App() {
       maximumFractionDigits: 2,
       minimumFractionDigits: 0,
     });
-
-    console.log(document.getElementById("monthly-payment"));
-
     setMonthlyPayment(formattedMonthlyPayment);
     setTotalPayment(formattedTotalPayment);
   }
 
   return (
     <div className="h-screen w-screen flex justify-around items-center bg-neutral-slate-100 p-1.5 max-sm:p-0 flex-col">
-      <div className="h-140 w-220 max-w-[100%] rounded-2xl flex overflow-hidden bg-neutral-white max-sm:h-full max-sm:w-full max-sm:flex-col max-sm:rounded-none">
+      <div className="h-150 w-230 max-w-[100%] rounded-2xl flex overflow-hidden bg-neutral-white max-sm:h-full max-sm:w-full max-sm:flex-col max-sm:rounded-none">
         <form
           action="#"
           className="h-full w-1/2 p-8 flex flex-col justify-between max-sm:w-full  max-sm:p-4 "
         >
-          <div className="flex w-full justify-between items-center max-sm:flex-col max-sm:items-start">
+          <div className="flex w-full justify-between items-center max-sm:flex-col max-sm:items-start text-neutral-slate-900">
             <p className="font-bold text-[20px] ">Mortgage Calculator</p>
             <p
-              className="text-gray-500 underline text-sm cursor-pointer"
+              className="text-neutral-slate-300 underline text-sm cursor-pointer hover:text-slate-700"
               onClick={resetForm}
             >
               Clear All
             </p>
           </div>
           <div className="flex flex-col gap-4 max-sm:gap-1">
-            <div className="w-full flex flex-col gap-2 group max-sm:gap-0">
+            <div className="w-full flex flex-col gap-2 group max-sm:gap-1">
               <p className="grayText">Mortgage Amount</p>
               <div className="inputDiv">
                 <label
                   for="amount"
-                  className="w-12 h-12 flex justify-center items-center font-bold bg-neutral-slate-100 text-[20px] text-gray-600 hover-without group-focus-within:bg-primary-lime cursor-pointer group-has-[.error]:bg-primary-red group-has-[.error]:text-neutral-white"
+                  className="w-12 h-12 flex justify-center items-center font-bold bg-neutral-slate-100 text-[20px] text-neutral-slate-700 hover-without group-focus-within:bg-primary-lime cursor-pointer group-has-[.error]:bg-primary-red group-has-[.error]:text-neutral-white transition duration-200 ease-in"
                 >
                   £
                 </label>
@@ -188,12 +185,11 @@ function App() {
                   id="amount"
                   className="input"
                   step="100"
-                  tabindex="1"
                 />
               </div>
             </div>
             <div className="w-full flex gap-2 ">
-              <div className="flex flex-col group gap-2">
+              <div className="flex flex-col group gap-2 max-sm:gap-1">
                 <p className="grayText">Mortgage Term</p>
                 <div className="inputDiv">
                   <input
@@ -201,14 +197,13 @@ function App() {
                     name="mortgage-term"
                     id="mortgage-term"
                     className="input"
-                    tabindex="2"
                   />
                   <label for="mortgage-term" className="label text-md ">
                     years
                   </label>
                 </div>
               </div>
-              <div className="flex flex-col group gap-2">
+              <div className="flex flex-col group gap-2 max-sm:gap-1">
                 <p className="grayText">Interest Rate</p>
                 <div className="inputDiv">
                   <input
@@ -216,7 +211,6 @@ function App() {
                     name="interest-rate"
                     id="interest-rate"
                     className="input"
-                    tabindex="3"
                   />
                   <label for="interest-rate" className="label">
                     %
@@ -224,7 +218,7 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col  gap-2" id="radioDiv">
+            <div className="flex flex-col  gap-2 max-sm:gap-1" id="radioDiv">
               <p className="grayText">Mortgage Type</p>
 
               <div className="w-full flex ">
@@ -234,12 +228,13 @@ function App() {
                     name="options"
                     value="repayment"
                     className="peer opacity-0 absolute"
-                    tabindex="4"
                     id="radio-1"
                   />
 
                   <div className="radioSelector"></div>
-                  <span className="text-gray-700 font-bold">Repayment</span>
+                  <span className="text-neutral-slate-700 font-bold">
+                    Repayment
+                  </span>
                 </label>
               </div>
               <div className="w-full flex ">
@@ -249,23 +244,18 @@ function App() {
                     name="options"
                     value="intertest_only"
                     className="peer opacity-0 absolute"
-                    tabindex="5"
                     id="radio-2"
                   />
 
                   <div className="radioSelector"></div>
-                  <span className="text-gray-700 font-bold">Interest Only</span>
+                  <span className="text-neutral-slate-700 font-bold">
+                    Interest Only
+                  </span>
                 </label>
               </div>
             </div>
           </div>
-          <button
-            className="btn"
-            id="btn"
-            type="submit"
-            onClick={handleSubmit}
-            tabindex="6"
-          >
+          <button className="btn" id="btn" type="submit" onClick={handleSubmit}>
             <img src={CalculatorIconUrl} alt="" />
             <label
               className="text-neutral-slate-900 cursor-pointer content-center"
@@ -276,18 +266,18 @@ function App() {
           </button>
         </form>
         {!showResults ? (
-          <div className="bg-neutral-slate-900-bg opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-center items-center gap-3 max-sm:w-full max-sm:rounded-none max-sm:pb-6 max-sm:gap-1">
+          <div className="bg-neutral-slate-900 opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-center items-center gap-3 max-sm:w-full max-sm:rounded-none max-sm:pb-6 max-sm:gap-1">
             <img src={IllustrationEmpty} alt="" />
             <span className="title font-bold text-[20px] text-neutral-white">
               Results shown here
             </span>
-            <span className="description w-full text-center px-8 grayText">
+            <span className="description w-full text-center px-8 text-neutral-slate-300 text-sm">
               Complete the form and click “calculate repayments” to see what
               your monthly repayments would be.
             </span>
           </div>
         ) : (
-          <div className="bg-neutral-slate-900-bg opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-start gap-3 max-sm:w-full max-sm:rounded-none p-8  max-sm:p-4 max-sm:pb-6 max-sm:gap-1">
+          <div className="bg-neutral-slate-900 opacity-[.95] h-full w-1/2 rounded-bl-[5rem] flex flex-col justify-start gap-3 max-sm:w-full max-sm:rounded-none p-8  max-sm:p-4 max-sm:pb-6 max-sm:gap-1">
             <span className="title font-bold text-[22px] text-neutral-white">
               Your results
             </span>
